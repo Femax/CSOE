@@ -36,13 +36,26 @@
     <script>
         $(document).ready(function() {
             $("#button").click(function() {
-                if (($("#title").val()) == "") {
-                    $(".Ouput").html('<div class="alert alert-warning">Введите название лекции!</div>');
-                } else $.post("/lecture", {
-                        login: $("#login").val(),
-                        password: $("#password").val()
-                    },
-                    onAjaxSuccess, "json");
+                var data = {
+                    title: $("#title").val(),
+                    content: $("#content").val(),
+                };
+
+
+                $.ajax({
+                    type: "POST",
+                    url: "/lecture",
+                    data: data,
+                    dataType: 'jsonp'
+                }).
+                done(function(data) {
+
+                    $(".Ouput").html(data.message);
+                }).fail(function( jqXHR, textStatus, errorThrown) {
+                      alert("jqXHR:"+jqXHR+"");
+                      $(".Ouput").html("jqXHR:"+JSON.stringify(jqXHR)+",textStatus:"+textStatus+",errorThrown:"+errorThrown);
+
+                });
 
             });
         });

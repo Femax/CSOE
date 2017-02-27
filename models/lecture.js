@@ -16,3 +16,5 @@ var LectureSchema = new Schema({
         required: true,
     }
 });
+
+module.exports = mongoose.model("Lecture", LectureSchema);

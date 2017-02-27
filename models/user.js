@@ -20,7 +20,7 @@ var UserSchema = new Schema({
     },
     lectures: [{
         type: ObjectId,
-        ref: 'lecture'
+        ref: 'Lecture'
     }]
 
 });
@@ -65,7 +65,7 @@ UserSchema.methods = {
 
         list: function() {
         return this.find()
-            .populate('lecture')
+            .populate('Lecture')
             .exec();
     }
 
