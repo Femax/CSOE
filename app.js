@@ -4,6 +4,7 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var morgan = require('morgan');
 var mongo = require('mongodb');
+var session = require('express-session')
 // var fileUpload = require('express-fileupload');
 // app.use(fileUpload());
 
@@ -23,6 +24,8 @@ nunjucks.configure('views', {
     autoescape: true,
     express: app
 });
+
+app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 60000 }}))
 app.use(express.static('views'));
 app.use(bodyParser.json());
 app.use('/', require('./controllers/authController'));

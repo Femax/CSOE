@@ -19,5 +19,6 @@ module.exports = function(req,res,next) {
         "error": true,
         "message": 'No token provided.'
     });
+    
   }
 }
