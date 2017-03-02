@@ -5,18 +5,18 @@ var mongoose = require('mongoose');
 var morgan = require('morgan');
 var mongo = require('mongodb');
 var session = require('express-session')
-// var fileUpload = require('express-fileupload');
-// app.use(fileUpload());
-
-// var Grid = require('gridfs-stream');
+var passport = require('passport');
+var mongoose = require('mongoose');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
 var nunjucks = require('nunjucks');
-// Grid.mongo = mongoose.mongo;
+var cookieParser = require('cookie-parser');
+var flash = require('connect-flash');
 global.config = require('./config');
 mongoose.connect(config.mongoUrl);
 global.db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:')) // connect to database
-mongoose.Promise = global.Promise; //added for work  mongoose promise
-// use body parser so we can get info from POST and/or URL parameters
+db.on('error', console.error.bind(console, 'connection error:'))
+mongoose.Promise = global.Promise;
 app.use(bodyParser.urlencoded({
     extended: true
 }));
@@ -24,18 +24,29 @@ nunjucks.configure('views', {
     autoescape: true,
     express: app
 });
-
-app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 60000 }}))
-app.use(express.static('views'));
+app.use(require('express-session')({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: false
+}));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(flash());
+
+app.use(express.static('views'));
+app.use(passport.initialize());
+app.use(passport.session());
+var Account = require('./models/account');
+passport.use(new LocalStrategy(Account.authenticate()));
+passport.serializeUser(Account.serializeUser());
+passport.deserializeUser(Account.deserializeUser());
 app.use('/', require('./controllers/authController'));
 app.use('/', require('./controllers/lectureController'));
 app.use(morgan('dev'));
-app.use(require('./middlewares/tokenValidator')); //middleware to authenticate token
 app.use('/', require('./controllers/indexController'));
+
 //Apis to protect and use token should be placed here
-
-
 
 app.listen(config.port, function() {
     console.log("Listening at Port " + config.port);

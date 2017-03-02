@@ -1,13 +1,10 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId;
+var passportLocalMongoose = require('passport-local-mongoose');
 
-var UserSchema = new Schema({
-    login: {
-        type: String,
-        required: true
-    },
-    password: {
+var AccountSchema = new Schema({
+    username: {
         type: String,
         required: true
     },
@@ -25,7 +22,7 @@ var UserSchema = new Schema({
 
 });
 
-UserSchema.methods = {
+AccountSchema.methods = {
 
     /**
      * Update token
@@ -58,19 +55,24 @@ UserSchema.methods = {
      * @api private
      */
 
-        setLectures: function(lectures) {
+    setLectures: function(lectures) {
         this.lections = lectures;
         this.save();
-    },
-
-        list: function() {
-        return this.find()
-            .populate('Lecture')
-            .exec();
     }
 
 
 };
 
+AccountSchema.statics = {
 
-module.exports = mongoose.model("User", UserSchema);
+
+    list: function() {
+        return this.find()
+            .populate('Lecture')
+            .exec();
+    }
+}
+
+AccountSchema.plugin(passportLocalMongoose);
+
+module.exports = mongoose.model("Account", AccountSchema);

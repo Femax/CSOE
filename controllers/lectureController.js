@@ -19,7 +19,11 @@ lectureRoute.post('/lecture', function(req, res) {
     //     title: lecture.title,
     //     content: lecture.content
     // });
-    var lectureInstance = new Lectures(lecture);
+    var lectureInstance = new Lectures({
+      title: lecture.title,
+      content: lecture.content,
+      status: false
+    });
     lectureInstance.save(function(err, savedLecture) {
         if (err) {
             console.log(err.message);
