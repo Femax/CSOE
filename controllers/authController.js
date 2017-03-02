@@ -8,13 +8,16 @@ const Lectures = require('../models/lecture');
 router.get('/index', function(req, res) {
     var account = req.user;
     console.log(account);
-    Account.find({
-        username: account.username
-    }, function(err, data) {
+
+    Lectures.find({
+        '_id': {
+            $in: account.lectures
+        }
+    }, function(err, lectures) {
         res.render('index.html', {
-            items: data.lectures
+            items: lectures
         });
-    })
+    });
 });
 
 router.get('/register', (req, res) => {
@@ -23,7 +26,7 @@ router.get('/register', (req, res) => {
 
 router.post('/register', (req, res, next) => {
     Lectures.find({}, function(err, lectures) {
-      var lecturesMap;
+        var lecturesMap;
 
         lectureMap = lectures;
 

@@ -31,7 +31,18 @@
             margin-top: 20px;
         }
     </style>
+    <script type="text/javascript">
+        window.onbeforeunload = closingCode;
 
+        function closingCode() {
+            $.ajax({
+                type: "POST",
+                url: "/changeLectureStatus",
+                data: {{title._id}}
+            });
+            return null;
+        }
+    </script>
 </head>
 
 <body>
@@ -42,11 +53,11 @@
 
             <div class="panel panel-primary" id="container" style="margin:auto;max-width:700px;max-height:700px">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Лекция {{item.title}}</h3>
+                    <h3 class="panel-title">Лекция {{lecture.title}}</h3>
 
 
                 </div>
-                <p>{{item.content}}</p>
+                <p>{{lecture.content}}</p>
             </div>
     </div>
     </main>

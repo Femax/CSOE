@@ -7,7 +7,11 @@ lectureRoute.get('/nlecture', function(req, res) {
 })
 
 lectureRoute.get('/lecture/:id', function(req, res) {
-    return res.render('lecture.html')
+    var id = req.params.id;
+    console.log(id);
+    Lectures.findOne({_id:id},function (err,lecture) {
+      return res.render('lecture.html',{lecture:lecture});
+    });
 })
 lectureRoute.post('/lecture', function(req, res) {
     //params sended from client
