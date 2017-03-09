@@ -43,6 +43,7 @@ passport.serializeUser(Account.serializeUser());
 passport.deserializeUser(Account.deserializeUser());
 app.use('/', require('./controllers/authController'));
 app.use('/', require('./controllers/lectureController'));
+app.use('/', require('./controllers/testController'));
 app.use(morgan('dev'));
 app.use('/', require('./controllers/indexController'));
 

@@ -19,7 +19,6 @@ var AccountSchema = new Schema({
         type: ObjectId,
         ref: 'Lecture'
     }]
-
 });
 
 AccountSchema.methods = {

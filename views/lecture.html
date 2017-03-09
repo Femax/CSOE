@@ -34,11 +34,16 @@
     <script type="text/javascript">
         window.onbeforeunload = closingCode;
 
+
         function closingCode() {
             $.ajax({
                 type: "POST",
                 url: "/changeLectureStatus",
-                data: {{title._id}}
+                data: {
+                    {
+                        title._id
+                    }
+                }
             });
             return null;
         }

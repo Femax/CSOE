@@ -14,6 +14,10 @@ var LectureSchema = new Schema({
     status: {
         type: Boolean,
         required: true,
+    },
+    test: {
+        type: ObjectId,
+        ref:'Test'
     }
 });
 

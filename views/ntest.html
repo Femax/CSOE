@@ -1,3 +1,4 @@
+<script src="nunjucks.js"></script>
 <!DOCTYPE html>
 <html>
 
@@ -5,8 +6,7 @@
     <meta charset="utf-8" />
     <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
     <title>Test</title>
-    <script src="jquery-3.1.1.min.js"></script>
-    <script src="nunjucks.js"></script>
+    <script src="../jquery-3.1.1.min.js"></script>
 
     <link href='http://fonts.googleapis.com/css?family=Lora' rel='stylesheet' type='text/css'>
     <!-- Latest compiled and minified CSS -->
@@ -25,7 +25,7 @@
 
         #content {
             width: 600px;
-            height: 300px;
+            height: 200px;
         }
 
         #button {
@@ -36,13 +36,26 @@
     <script>
         $(document).ready(function() {
             $("#button").click(function() {
-                if (($("#title").val()) != "") {
-                    $(".RegRdy").html('<div class="alert alert-warning">Ввведеные пароли не совпадают!</div>');
-                } else $.post("/ok", {
-                        login: $("#login").val(),
-                        password: $("#password").val()
-                    },
-                    onAjaxSuccess, "json");
+                var data = {
+                    question: $("#question").val(),
+                    answer: $("#answer").val(),
+                };
+
+
+                $.ajax({
+                    type: "POST",
+                    url: "/test",
+                    data: data,
+                    dataType: 'jsonp'
+                }).
+                done(function(data) {
+
+                    $(".Ouput").html(data.message);
+                }).fail(function(jqXHR, textStatus, errorThrown) {
+                    alert("jqXHR:" + jqXHR + "");
+                    $(".Ouput").html("jqXHR:" + JSON.stringify(jqXHR) + ",textStatus:" + textStatus + ",errorThrown:" + errorThrown);
+
+                });
 
             });
         });
@@ -62,21 +75,18 @@
 
             <div class="panel panel-primary" id="container" style="margin:auto;max-width:700px;max-height:700px">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Доступные лекции</h3>
+                    <h3 class="panel-title">Новый тест</h3>
                 </div>
                 <div class="panel-body">
-                  <ul title="Достпуные лекции">
-                    {% for item in items %} {% if item.status %}
-                                  <li >{{item.title}}</li>
-                                  <a href="/test/{{item.test._id}}">Пройти тест</>
-                       {% else %}<br>
-       <a href="/lecture/{{item._id}}">{{item.title}}</>
-                     {% endif %}
-                     {% else %}
-                    <li>Нет доступных лекций</li>
-                    {% endfor %}
-                    {{user}}
-                  </ul>
+                    <div class="input-group" style="margin:auto;padding:20px">
+                        <h3>Вопрос</h3>
+                        <input id="question" type="text" name="title" class="form-control">
+                        <h3>Ответ</h3>
+                        <input id="answer" type="text" name="title" class="form-control">
+                        <button id="button" type="submit" class="btn btn-default">Добавить</button>
+                    </div>
+                    <br>
+                    <br>
                 </div>
             </div>
     </div>
