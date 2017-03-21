@@ -66,18 +66,15 @@
                 </div>
                 <div class="panel-body">
                     <ul title="Достпуные лекции">
-                        {% for item in items %} {% if item.status %}
-                        <li>{{item.title}}</li>
-                        <a href="/test/{{item.test._id}}">Пройти тест</a>
-                       {% else %}<br>
-       <a href="/lecture/{{item._id}}">{{item.title}}</>
-         <p>Пройти тест</p>
-                     {% endif %}
-                     {% else %}
-                    <li>Нет доступных лекций</li>
-                    {% endfor %}
-                    {{user}}
-                  </ul>
+                        {% for item in items %}
+                        <a href="/lecture/{{item._id}}">{{item.title}}</a>
+                        <br>
+                         {% if item.test.isEnabled %}
+                         <a href="/lecture/{{item.test._id}}">Пройти тест</a>
+                        {% endif %} {% else %}
+                        <li>Нет доступных лекций</li>
+                        {% endfor %} {{user}}
+                    </ul>
                 </div>
             </div>
     </div>

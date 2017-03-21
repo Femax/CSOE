@@ -20,14 +20,8 @@ lectureRoute.get('/lecture/:id', function(req, res) {
 })
 lectureRoute.post('/lecture', function(req, res) {
     //params sended from client
-    console.log(req.body);
     const lecture = req.body;
     console.log(lecture);
-    //construct location
-    // var  lectureInstance = new Lectures({
-    //     title: lecture.title,
-    //    content: lecture.content
-    // });
     var test = Test.findOne({
         answer: "4"
     }).exec().then(function(test) {
@@ -40,31 +34,22 @@ lectureRoute.post('/lecture', function(req, res) {
         return lectureInstance.save();
     }).then(function(lectureInstance) {
         res.status(200).send(lectureInstance);
-    }).catch(function (err) {
-      console.log('error:',err);
+    }).catch(function(err) {
+        console.log('error:', err);
     });
-
-
-
 });
 
-lectureRoute.post('/opentTest', function(req, res) {
+lectureRoute.post('/openTest', function(req, res) {
     //params sended from client
     const lecture = req.body;
     Lecture.findOne({
         _id: req.body.id
-    }).populate('Test').exec(function functionName(err, lecture) {
-        lecture.test.isEnabled = true;
-        Test.findOneAndUpdate({
-            _id: lecture.test._id
-        }, lecture.test, {
-            upsert: true
-        }, function(err, doc) {
-            if (err) return res.send(500, {
-                error: err
-            });
-            return res.send(200, {});
-        });
+    }).populate('Test').exec().then(lecture => {
+        Test.findByIdAndUpdate(lecture.test,{$set: {isEnabled: true}})
+        .exec()
+        .then(test => {
+          res.status(200).send(test);
+        })
     });
 
 });

@@ -1,40 +1,77 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<style>
-.card {
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    transition: 0.3s;
-    width: 40%;
-    border-radius: 5px;
-    margin: auto;
-}
+    <script src="../timer.js"></script>
+    <script type="text/javascript">
+        var timer = new Timer({
+            tick: 1,
+            ontick: function(sec) {
 
-.card:hover {
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-}
+                ("#timer").text(sec);
+            },
+            onstart: function() {
+                console.log('timer started');
+            }
+        });
+        // defining options using on
+        timer.on('end', function() {
+            console.log('timer ended');
+            $(document).ready(function() {
+                $("#button").click(function() {
+                    $.ajax({
+                        type: "POST",
+                        url: "localhost:3000/openTest",
+                        data: {
+                            id: $(id).val()
+                        }
+                    }).done(function{
+                      window.location.replace("localhost:3000/index");
+                    });;
+                });
+            });
+        });
 
-img {
-    border-radius: 5px 5px 0 0;
-}
+        //start timer for 10 seconds
+        timer.start(120);
+    </script>
+    <style>
+        .card {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            transition: 0.3s;
+            width: 40%;
+            border-radius: 5px;
+            margin: auto;
+        }
 
-.container {
-    padding: 2px 16px;
-}
-</style>
+        .card:hover {
+            box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        img {
+            border-radius: 5px 5px 0 0;
+        }
+
+        .container {
+            padding: 2px 16px;
+        }
+    </style>
 </head>
+
 <body>
 
 
-<div class="card">
-  <div class="container">
+    <div class="card">
+        <div class="container">
+            <h4 id="timer"></>
+            <h4><b>{{item.question}}</b></h4>
+            <input type="text" name="name" value="">
+            <button id=t ype="sumbit">отправить
+                </>
 
-    <h4><b>{{item.question}}</b></h4>
-    <input type="text" name="name" value="">
-    <button id= type="sumbit">отправить</>
-
-  </div>
-</div>
+        </div>
+    </div>
 
 </body>
+
 </html>
